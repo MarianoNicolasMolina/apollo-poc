@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server');
+const {   ApolloServer, gql } = require('apollo-server');
 const { buildSubgraphSchema } = require('@apollo/subgraph');
 
 const typeDefs = gql`
@@ -54,10 +54,31 @@ const resolvers = {
     }
   };
 
+  const myPlugin = {
+    // Fires whenever a GraphQL request is received from a client.
+    async requestDidStart(requestContext) {
+      console.log('Request started! Query:\n' + requestContext.request.query);
+  
+      return {
+        // Fires whenever Apollo Server will parse a GraphQL
+        // request to create its associated document AST.
+        async parsingDidStart(requestContext) {
+          console.log('Parsing started!');
+        },
+  
+        // Fires whenever Apollo Server will validate a
+        // request's document AST against your GraphQL schema.
+        async validationDidStart(requestContext) {
+          console.log('Validation started!');
+        },
+      };
+    },
+  };
+
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
-  schema: buildSubgraphSchema({ typeDefs, resolvers })
+  schema: buildSubgraphSchema({ typeDefs, resolvers, plugins: [myPlugin], })
 });
 
 // The `listen` method launches a web server.
