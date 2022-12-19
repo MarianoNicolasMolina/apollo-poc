@@ -46,7 +46,7 @@ const typeDefs = gql`
     type ShipmentDelivered @key(fields: "shipmentId"){
         orderId: String!
         shipmentId: String!
-        status: ShipmentStatus!
+        status: String!
         apolloShipmentField: String!
     }
 
@@ -54,7 +54,7 @@ const typeDefs = gql`
     type ShipmentPending @key(fields: "shipmentId"){
         orderId: String!
         shipmentId: String!
-        status: ShipmentStatus!
+        status: String!
         apolloShipmentField: String!
     }
 
@@ -62,15 +62,10 @@ const typeDefs = gql`
     type ShipmentShipped @key(fields: "shipmentId"){
         orderId: String!
         shipmentId: String!
-        status: ShipmentStatus!
+        status: String!
         apolloShipmentField: String!
     }
 
-    enum ShipmentStatus {
-        PENDING
-        SHIPPED
-        DELIVERED
-    }
 
     type Query {
         addressesByCustomerId(customerId: String!): [Address!]
@@ -78,7 +73,7 @@ const typeDefs = gql`
         ordersByCustomerId(customerId: String!, ordersCount: Int): [Order!]
         orderByCustomerIdAndOrderId(customerId: String!, orderId: String!): Order
         productsByCustomerIdAndOrderId(customerId: String!, orderId: String!, productsCounts: Int): [Product!]
-        shipmentsByShipmentId(shipmentId: String!): ShipmentUnion
+        shipmentByShipmentId(shipmentId: String!): ShipmentUnion
     }
 `;
 
