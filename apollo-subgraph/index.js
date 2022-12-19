@@ -218,13 +218,13 @@ const resolvers = {
     },
     Address: {
       __resolveReference(addressRef){
-            const address = address.find(a => a.id == addressRef.id);
+            const address = address.find(a => a.addressId == addressRef.addressId);
             return address;
         }
       },
     Customer: {
     __resolveReference(customerRef){
-            const customer = customers.find(c => c.id == customerRef.id);
+            const customer = customers.find(c => c.customerId == customerRef.customerId);
             return customer;
         }
     },
