@@ -18,6 +18,7 @@ const typeDefs = gql`
     type Customer @key(fields: "customerId"){
         customerId: String!
         apolloLastname: String!
+        address: Address!
     }
 
     "An Item"
@@ -68,8 +69,7 @@ const typeDefs = gql`
 
 
     type Query {
-        addressesByCustomerId(customerId: String!): [Address!]
-        addressByCustomerIdAndAddressId(customerId: String!, addressId: String!): Address
+        addressByCustomerId(customerId: String!): Address
         ordersByCustomerId(customerId: String!, ordersCount: Int): [Order!]
         orderByCustomerIdAndOrderId(customerId: String!, orderId: String!): Order
         productsByCustomerIdAndOrderId(customerId: String!, orderId: String!, productsCounts: Int): [Product!]
@@ -77,30 +77,17 @@ const typeDefs = gql`
     }
 `;
 
-const addressesByCustomer = [
-    { customerId : "customerId1" , addresses : [{addressId : "addressId1", apolloState : "state1"}, {addressId : "addressId2", apolloState : "state2"}]},
-    { customerId : "customerId2" , addresses : [{addressId : "addressId3", apolloState : "state3"}, {addressId : "addressId4", apolloState : "state4"}]},
-    { customerId : "customerId3" , addresses : [{addressId : "addressId5", apolloState : "state5"}, {addressId : "addressId6", apolloState : "state6"}]},
-    { customerId : "customerId4" , addresses : [{addressId : "addressId7", apolloState : "state7"}, {addressId : "addressId8", apolloState : "state8"}]},
-    { customerId : "customerId5" , addresses : [{addressId : "addressId9", apolloState : "state9"}, {addressId : "addressId10", apolloState : "state10"}]},
-    { customerId : "customerId6" , addresses : [{addressId : "addressId11", apolloState : "state11"}, {addressId : "addressId12", apolloState : "state12"}]},
-    { customerId : "customerId7" , addresses : [{addressId : "addressId13", apolloState : "state13"}, {addressId : "addressId14", apolloState : "state14"}]},
-    { customerId : "customerId8" , addresses : [{addressId : "addressId15", apolloState : "state15"}, {addressId : "addressId16", apolloState : "state16"}]},
-    { customerId : "customerId9" , addresses : [{addressId : "addressId17", apolloState : "state17"}, {addressId : "addressId18", apolloState : "state18"}]},
-    { customerId : "customerId10" , addresses : [{addressId : "addressId19", apolloState : "state19"}, {addressId : "addressId20", apolloState : "state20"}]},
-]
-
 const customers = [
-    { customerId : "customerId1" , apolloLastname : "customerLastname1"},
-    { customerId : "customerId2" , apolloLastname : "customerLastname2"},
-    { customerId : "customerId3" , apolloLastname : "customerLastname3"},
-    { customerId : "customerId4" , apolloLastname : "customerLastname4"},
-    { customerId : "customerId5" , apolloLastname : "customerLastname5"},
-    { customerId : "customerId6" , apolloLastname : "customerLastname6"},
-    { customerId : "customerId7" , apolloLastname : "customerLastname7"},
-    { customerId : "customerId8" , apolloLastname : "customerLastname8"},
-    { customerId : "customerId9" , apolloLastname : "customerLastname9"},
-    { customerId : "customerId10" , apolloLastname : "customerLastname10"},
+    { customerId : "customerId1" , apolloLastname : "customerLastname1", address: {addressId : "addressId1", apolloState : "state1"}},
+    { customerId : "customerId2" , apolloLastname : "customerLastname2", address: {addressId : "addressId2", apolloState : "state2"}},
+    { customerId : "customerId3" , apolloLastname : "customerLastname3", address: {addressId : "addressId3", apolloState : "state3"}},
+    { customerId : "customerId4" , apolloLastname : "customerLastname4", address: {addressId : "addressId4", apolloState : "state4"}},
+    { customerId : "customerId5" , apolloLastname : "customerLastname5", address: {addressId : "addressId5", apolloState : "state5"}},
+    { customerId : "customerId6" , apolloLastname : "customerLastname6", address: {addressId : "addressId6", apolloState : "state6"}},
+    { customerId : "customerId7" , apolloLastname : "customerLastname7", address: {addressId : "addressId7", apolloState : "state7"}},
+    { customerId : "customerId8" , apolloLastname : "customerLastname8", address: {addressId : "addressId8", apolloState : "state8"}},
+    { customerId : "customerId9" , apolloLastname : "customerLastname9", address: {addressId : "addressId9", apolloState : "state9"}},
+    { customerId : "customerId10" , apolloLastname : "customerLastname10", address: {addressId : "addressId10", apolloState : "state10"}},
 ];
 
 const addresses = [
@@ -108,12 +95,7 @@ const addresses = [
     {addressId : "addressId3", apolloState : "state3"}, {addressId : "addressId4", apolloState : "state4"},
     {addressId : "addressId5", apolloState : "state5"}, {addressId : "addressId6", apolloState : "state6"},
     {addressId : "addressId7", apolloState : "state7"}, {addressId : "addressId8", apolloState : "state8"},
-    {addressId : "addressId9", apolloState : "state9"}, {addressId : "addressId10", apolloState : "state10"},
-    {addressId : "addressId11", apolloState : "state11"}, {addressId : "addressId12", apolloState : "state12"},
-    {addressId : "addressId13", apolloState : "state13"}, {addressId : "addressId14", apolloState : "state14"},
-    {addressId : "addressId15", apolloState : "state15"}, {addressId : "addressId16", apolloState : "state16"},
-    {addressId : "addressId17", apolloState : "state17"}, {addressId : "addressId18", apolloState : "state18"},
-    {addressId : "addressId19", apolloState : "state19"}, {addressId : "addressId20", apolloState : "state20"},
+    {addressId : "addressId9", apolloState : "state9"}, {addressId : "addressId10", apolloState : "state10"}
 ];
 
 const items = [
@@ -180,12 +162,8 @@ const productsByCustomerAndOrder = [
 const resolvers = {
     Query: {
         addressesByCustomerId(parent, args, context, info) {
-            const addresses = addressesByCustomer.find(obj => obj.customerId == args.customerId).addresses
-            return addresses;
-        },
-        addressByCustomerIdAndAddressId(parent, args, context, info) {
-            const addresses = addressesByCustomer.find(obj => obj.customerId == args.customerId).addresses;
-            return addresses.find(address => address.addressId == args.addressId);
+            const address = customers.find(obj => obj.customerId == args.customerId).address;
+            return address;
         },
         ordersByCustomerId(parent, args, context, info){
             const ordersFilter = orders.collect(order => order.customerId == args.customerId);
