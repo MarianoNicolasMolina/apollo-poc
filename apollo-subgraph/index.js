@@ -5,7 +5,7 @@ const typeDefs = gql`
 
   extend schema
     @link(url: "https://specs.apollo.dev/federation/v2.0",
-          import: ["@key","@shareable", "@shareable"])
+          import: ["@key","@shareable", "@external", "@provides", "@requires"])
 
     union ShipmentUnion = ShipmentPending | ShipmentShipped | ShipmentDelivered
     "A simple Address"
@@ -17,15 +17,17 @@ const typeDefs = gql`
     "A simple Customer"
     type Customer @key(fields: "customerId"){
         customerId: String!
+        name: String!
         apolloLastname: String!
         address: Address!
+        fullname: String! @requires(fields: "name apolloLastname")
     }
 
     "An Item"
     type Item @key(fields: "itemId"){
         itemId: Int!
         "A Product"
-        product: Product!
+        product: Product! @provides(fields : "apolloBrand")
         apolloCount: Int!
     }
 
@@ -39,7 +41,7 @@ const typeDefs = gql`
     "A Product"
     type Product @key(fields: "productId"){
         productId: String!
-        apolloBrand: String!
+        apolloBrand: String @external
         apolloDecription: String!
     }
 
@@ -78,16 +80,16 @@ const typeDefs = gql`
 `;
 
 const customers = [
-    { customerId : "customerId1" , apolloLastname : "customerLastname1", address: {addressId : "addressId1", apolloState : "state1"}},
-    { customerId : "customerId2" , apolloLastname : "customerLastname2", address: {addressId : "addressId2", apolloState : "state2"}},
-    { customerId : "customerId3" , apolloLastname : "customerLastname3", address: {addressId : "addressId3", apolloState : "state3"}},
-    { customerId : "customerId4" , apolloLastname : "customerLastname4", address: {addressId : "addressId4", apolloState : "state4"}},
-    { customerId : "customerId5" , apolloLastname : "customerLastname5", address: {addressId : "addressId5", apolloState : "state5"}},
-    { customerId : "customerId6" , apolloLastname : "customerLastname6", address: {addressId : "addressId6", apolloState : "state6"}},
-    { customerId : "customerId7" , apolloLastname : "customerLastname7", address: {addressId : "addressId7", apolloState : "state7"}},
-    { customerId : "customerId8" , apolloLastname : "customerLastname8", address: {addressId : "addressId8", apolloState : "state8"}},
-    { customerId : "customerId9" , apolloLastname : "customerLastname9", address: {addressId : "addressId9", apolloState : "state9"}},
-    { customerId : "customerId10" , apolloLastname : "customerLastname10", address: {addressId : "addressId10", apolloState : "state10"}},
+    { customerId : "customerId1" , name: "customerName1", apolloLastname : "customerLastname1", address: {addressId : "addressId1", apolloState : "state1"}},
+    { customerId : "customerId2" , name: "customerName2", apolloLastname : "customerLastname2", address: {addressId : "addressId2", apolloState : "state2"}},
+    { customerId : "customerId3" , name: "customerName3", apolloLastname : "customerLastname3", address: {addressId : "addressId3", apolloState : "state3"}},
+    { customerId : "customerId4" , name: "customerName4", apolloLastname : "customerLastname4", address: {addressId : "addressId4", apolloState : "state4"}},
+    { customerId : "customerId5" , name: "customerName5", apolloLastname : "customerLastname5", address: {addressId : "addressId5", apolloState : "state5"}},
+    { customerId : "customerId6" , name: "customerName6", apolloLastname : "customerLastname6", address: {addressId : "addressId6", apolloState : "state6"}},
+    { customerId : "customerId7" , name: "customerName7", apolloLastname : "customerLastname7", address: {addressId : "addressId7", apolloState : "state7"}},
+    { customerId : "customerId8" , name: "customerName8", apolloLastname : "customerLastname8", address: {addressId : "addressId8", apolloState : "state8"}},
+    { customerId : "customerId9" , name: "customerName9", apolloLastname : "customerLastname9", address: {addressId : "addressId9", apolloState : "state9"}},
+    { customerId : "customerId10", name: "customerName10" , apolloLastname : "customerLastname10", address: {addressId : "addressId10", apolloState : "state10"}},
 ];
 
 const addresses = [
@@ -125,13 +127,13 @@ const orders = [
 ]
 
 const products = [
-    { productId : "productId1", apolloBrand : "brand1", apolloDecription : "description1"},
-    { productId : "productId2", apolloBrand : "brand2", apolloDecription : "description2"},
-    { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"},
-    { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"},
-    { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"},
-    { productId : "productId6", apolloBrand : "brand6", apolloDecription : "description6"},
-    { productId : "productId7", apolloBrand : "brand7", apolloDecription : "description7"},
+    { productId : "productId1", apolloBrand : null, apolloDecription : "description1"},
+    { productId : "productId2", apolloBrand : null, apolloDecription : "description2"},
+    { productId : "productId3", apolloBrand : null, apolloDecription : "description3"},
+    { productId : "productId4", apolloBrand : null, apolloDecription : "description4"},
+    { productId : "productId5", apolloBrand : null, apolloDecription : "description5"},
+    { productId : "productId6", apolloBrand : null, apolloDecription : "description6"},
+    { productId : "productId7", apolloBrand : null, apolloDecription : "description7"},
 ]
  
 const shipments = [
@@ -204,7 +206,10 @@ const resolvers = {
     __resolveReference(customerRef){
             const customer = customers.find(c => c.customerId == customerRef.customerId);
             return customer;
-        }
+        },
+    fullname(customer){
+        return customer.apolloLastname + " " + customer.name;
+    }
     },
     Item: {
         __resolveReference(itemRef){

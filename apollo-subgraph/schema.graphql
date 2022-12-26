@@ -1,0 +1,72 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key","@shareable", "@external", "@provides", "@requires"])
+
+union ShipmentUnion = ShipmentPending | ShipmentShipped | ShipmentDelivered
+"A simple Address"
+type Address @key(fields: "addressId") {
+    addressId: String!
+    apolloState: String!
+}
+
+"A simple Customer"
+type Customer @key(fields: "customerId"){
+    customerId: String!
+    name: String!
+    apolloLastname: String!
+    address: Address!
+    fullname: String! @requires(fields: "name apolloLastname")
+}
+
+"An Item"
+type Item @key(fields: "itemId"){
+    itemId: Int!
+    "A Product"
+    product: Product! @provides(fields : "apolloBrand")
+    apolloCount: Int!
+}
+
+"An Order"
+type Order @key(fields: "orderId"){
+    orderId: String!
+    customerId: String!
+    items: [Item!]!
+}
+
+"A Product"
+type Product @key(fields: "productId"){
+    productId: String!
+    apolloBrand: String @external
+    apolloDecription: String!
+}
+
+"A delivered Shipment"
+type ShipmentDelivered @key(fields: "shipmentId"){
+    orderId: String!
+    shipmentId: String!
+    status: String!
+    apolloShipmentField: String!
+}
+
+"A pending Shipment"
+type ShipmentPending @key(fields: "shipmentId"){
+    orderId: String!
+    shipmentId: String!
+    status: String!
+    apolloShipmentField: String!
+}
+
+"A shipped Shipment"
+type ShipmentShipped @key(fields: "shipmentId"){
+    orderId: String!
+    shipmentId: String!
+    status: String!
+    apolloShipmentField: String!
+}
+
+
+type Query {
+    addressByCustomerId(customerId: String!): Address
+    ordersByCustomerId(customerId: String!, ordersCount: Int): [Order!]
+    orderByCustomerIdAndOrderId(customerId: String!, orderId: String!): Order
+    productsByCustomerIdAndOrderId(customerId: String!, orderId: String!, productsCounts: Int): [Product!]
+    shipmentByShipmentId(shipmentId: String!): ShipmentUnion
+}
