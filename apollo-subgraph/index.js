@@ -17,10 +17,10 @@ const typeDefs = gql`
     "A simple Customer"
     type Customer @key(fields: "customerId"){
         customerId: String!
-        name: String!
+        name: String! @external
         apolloLastname: String!
         address: Address!
-        fullname: String! @requires(fields: "name apolloLastname")
+        fullname: String! @requires(fields: "name")
     }
 
     "An Item"
