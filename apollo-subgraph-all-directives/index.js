@@ -209,7 +209,10 @@ const resolvers = {
             return customer;
         },
     fullname(customer){
-        return customer.apolloLastname + " " + customer.name;
+        if(customer.name)
+            return customer.apolloLastname + " " + customer.name;
+        else
+            return customer.apolloLastname + " FalseName";
     }
     },
     Item: {
