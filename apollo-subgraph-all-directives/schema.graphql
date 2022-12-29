@@ -1,6 +1,4 @@
- extend schema
-    @link(url: "https://specs.apollo.dev/federation/v2.0",
-          import: ["@key","@shareable", "@external", "@provides", "@requires"])
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key","@shareable", "@external", "@provides", "@requires", "@inaccessible"])
 
 union ShipmentUnion = ShipmentPending | ShipmentShipped | ShipmentDelivered
 "A simple Address"
@@ -12,10 +10,9 @@ type Address @key(fields: "addressId") {
 "A simple Customer"
 type Customer @key(fields: "customerId address { addressId }"){
     customerId: String!
-    name: String! @external
+    name: String!
     apolloLastname: String!
     address: Address!
-    fullname: String! @requires(fields: "name")
 }
 
 "An Item"
@@ -39,6 +36,7 @@ type Product @key(fields: "productId"){
     productId: String!
     apolloBrand: String @external
     apolloDecription: String!
+    brandCode: String! @requires(fields: "apolloBrand")
 }
 
 "A delivered Shipment"

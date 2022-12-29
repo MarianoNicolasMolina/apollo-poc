@@ -17,10 +17,9 @@ const typeDefs = gql`
     "A simple Customer"
     type Customer @key(fields: "customerId address { addressId }"){
         customerId: String!
-        name: String! @external
+        name: String!
         apolloLastname: String!
         address: Address!
-        fullname: String! @requires(fields: "name")
     }
 
     "An Item"
@@ -44,6 +43,7 @@ const typeDefs = gql`
         productId: String!
         apolloBrand: String @external
         apolloDecription: String!
+        brandCode: String! @requires(fields: "apolloBrand")
     }
 
     "A delivered Shipment"
@@ -77,6 +77,7 @@ const typeDefs = gql`
         orderByCustomerIdAndOrderId(customerId: String!, orderId: String!): Order
         productsByCustomerIdAndOrderId(customerId: String!, orderId: String!, productsCounts: Int): [Product!]
         shipmentByShipmentId(shipmentId: String!): ShipmentUnion
+        productById(productId: String!): Product
     }
 `;
 
@@ -194,6 +195,9 @@ const resolvers = {
             const shipment = shipments.find(ship => ship.shipmentId == args.shipmentId);
             return shipment;
         },
+        productById(parent, args, context, info){
+            return products.find(prod => prod.productId == args.productId);
+        }
     },
     ShipmentUnion: {
         __resolveType(obj, context, info) {
@@ -217,13 +221,7 @@ const resolvers = {
     __resolveReference(customerRef){
             const customer = customers.find(c => c.customerId == customerRef.customerId && c.address.addressId == customerRef.address.addressId);
             return customer;
-        },
-    fullname(customer){
-        if(customer.name)
-            return customer.apolloLastname + " " + customer.name;
-        else
-            return customer.apolloLastname + " FalseName";
-    }
+        }
     },
     Item: {
         __resolveReference(itemRef){
@@ -241,6 +239,12 @@ const resolvers = {
         __resolveReference(productRef){
             const product = products.find(prod => prod.productId == productRef.productId);
             return product;
+        },
+        brandCode(productRef){
+            if(productRef.apolloBrand)
+                return productRef.apolloBrand + "-4569";
+            else
+                return  "apolloBrandN-4569";
         }
     },
     ShipmentPending: {
