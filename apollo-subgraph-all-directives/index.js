@@ -164,7 +164,7 @@ const productsByCustomerAndOrder = [
 
 const resolvers = {
     Query: {
-        addressesByCustomerId(parent, args, context, info) {
+        addressByCustomerId(parent, args, context, info) {
             const address = customers.find(obj => obj.customerId == args.customerId).address;
             return address;
         },
