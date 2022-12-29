@@ -102,16 +102,26 @@ const addresses = [
 ];
 
 const items = [
-    { itemId : 1, product: { productId : "productId1", apolloBrand : "brand1", apolloDecription : "description1"}}, { itemId : 2, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}},
-    { itemId : 3, product: { productId : "productId1", apolloBrand : "brand1", apolloDecription : "description1"}}, { itemId : 4, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}},
-    { itemId : 5, product: { productId : "productId2", apolloBrand : "brand2", apolloDecription : "description2"}}, { itemId : 6, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}},
-    { itemId : 7, product: { productId : "productId2", apolloBrand : "brand2", apolloDecription : "description2"}}, { itemId : 8, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}},
-    { itemId : 9, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}}, { itemId : 10, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}},
-    { itemId : 11, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}}, { itemId : 12, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}},
-    { itemId : 13, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}}, { itemId : 14, product: { productId : "productId6", apolloBrand : "brand6", apolloDecription : "description6"}},
-    { itemId : 15, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}}, { itemId : 16, product: { productId : "productId6", apolloBrand : "brand6", apolloDecription : "description6"}},
-    { itemId : 17, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}}, { itemId : 18, product: { productId : "productId7", apolloBrand : "brand7", apolloDecription : "description7"}},
-    { itemId : 19, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}}, { itemId : 20, product: { productId : "productId7", apolloBrand : "brand7", apolloDecription : "description7"}},
+    { itemId : 1,apolloCount: 2, product: { productId : "productId1", apolloBrand : "brand1", apolloDecription : "description1"}},
+    { itemId : 2,apolloCount: 2, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}},
+    { itemId : 3,apolloCount: 2, product: { productId : "productId1", apolloBrand : "brand1", apolloDecription : "description1"}}, 
+    { itemId : 4,apolloCount: 2, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}},
+    { itemId : 5,apolloCount: 2, product: { productId : "productId2", apolloBrand : "brand2", apolloDecription : "description2"}}, 
+    { itemId : 6,apolloCount: 2, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}},
+    { itemId : 7,apolloCount: 2, product: { productId : "productId2", apolloBrand : "brand2", apolloDecription : "description2"}}, 
+    { itemId : 8,apolloCount: 2, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}},
+    { itemId : 9,apolloCount: 2, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}}, 
+    { itemId : 10,apolloCount: 2, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}},
+    { itemId : 11,apolloCount: 2, product: { productId : "productId3", apolloBrand : "brand3", apolloDecription : "description3"}}, 
+    { itemId : 12,apolloCount: 2, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}},
+    { itemId : 13,apolloCount: 2, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}}, 
+    { itemId : 14,apolloCount: 2, product: { productId : "productId6", apolloBrand : "brand6", apolloDecription : "description6"}},
+    { itemId : 15,apolloCount: 2, product: { productId : "productId4", apolloBrand : "brand4", apolloDecription : "description4"}}, 
+    { itemId : 16,apolloCount: 2, product: { productId : "productId6", apolloBrand : "brand6", apolloDecription : "description6"}},
+    { itemId : 17,apolloCount: 2, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}}, 
+    { itemId : 18,apolloCount: 2, product: { productId : "productId7", apolloBrand : "brand7", apolloDecription : "description7"}},
+    { itemId : 19,apolloCount: 2, product: { productId : "productId5", apolloBrand : "brand5", apolloDecription : "description5"}}, 
+    { itemId : 20,apolloCount: 2, product: { productId : "productId7", apolloBrand : "brand7", apolloDecription : "description7"}},
 ]
 
 const orders = [
