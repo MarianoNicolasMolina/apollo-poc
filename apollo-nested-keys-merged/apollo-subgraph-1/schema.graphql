@@ -1,0 +1,12 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0",import: ["@key","@shareable", "@external", "@provides", "@requires", "@inaccessible"])
+
+type Item @key(fields: "itemId product { productId }"){
+    itemId: String!
+    product: Product! 
+    apolloBField: String!
+}
+
+type Product @key(fields: "productId"){
+    productId: String!
+    code: String!
+}

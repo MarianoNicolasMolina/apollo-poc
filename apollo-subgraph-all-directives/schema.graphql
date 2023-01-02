@@ -1,6 +1,5 @@
 extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key","@shareable", "@external", "@provides", "@requires", "@inaccessible"])
 
-union ShipmentUnion = ShipmentPending | ShipmentShipped | ShipmentDelivered
 "A simple Address"
 type Address @key(fields: "addressId") {
     addressId: String!
@@ -39,35 +38,10 @@ type Product @key(fields: "productId"){
     brandCode: String! @requires(fields: "apolloBrand")
 }
 
-"A delivered Shipment"
-type ShipmentDelivered @key(fields: "shipmentId"){
-    orderId: String!
-    shipmentId: String!
-    status: String!
-    apolloShipmentField: String!
-}
-
-"A pending Shipment"
-type ShipmentPending @key(fields: "shipmentId"){
-    orderId: String!
-    shipmentId: String!
-    status: String!
-    apolloShipmentField: String!
-}
-
-"A shipped Shipment"
-type ShipmentShipped @key(fields: "shipmentId"){
-    orderId: String!
-    shipmentId: String!
-    status: String!
-    apolloShipmentField: String!
-}
-
 
 type Query {
     addressByCustomerId(customerId: String!): Address
     ordersByCustomerId(customerId: String!, ordersCount: Int): [Order!]
     orderByCustomerIdAndOrderId(customerId: String!, orderId: String!): Order
     productsByCustomerIdAndOrderId(customerId: String!, orderId: String!, productsCounts: Int): [Product!]
-    shipmentByShipmentId(shipmentId: String!): ShipmentUnion
 }
