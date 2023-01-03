@@ -11,7 +11,7 @@ const typeDefs = gql`
         customerId: String!
         name: String! @external
         apolloLastname: String!
-        lastname: String! @requires(fields: "name")
+        fullname: String! @requires(fields: "name")
     }
 
     type Item @key(fields: "itemId product { productId }"){
