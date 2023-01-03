@@ -68,7 +68,7 @@ const resolvers = {
     Customer: {
     __resolveReference(customerRef){
             const customer = customers.find(c => c.customerId == customerRef.customerId);
-            return customer;
+            return {...customer,customerRef};
         },
     fullname(customerRef){
         return customerRef.name + " " + customerRef.apolloLastname;
